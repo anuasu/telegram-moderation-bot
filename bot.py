@@ -1,4 +1,5 @@
 import telebot
+from database import setup_database, add_user
 
 # =========================
 # BOT CONFIG
@@ -13,6 +14,7 @@ ADMIN_IDS = [
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
+setup_database()
 
 # =========================
 # HELPERS
@@ -49,6 +51,16 @@ def admin(message):
         message,
         "👑 Admin Panel\n\n"
         "Bot is working correctly."
+    )
+    
+@bot.message_handler(func=lambda message: True)
+def track_user(message):
+    user = message.from_user
+
+    add_user(
+        user.id,
+        user.username,
+        user.first_name
     )
 
 
